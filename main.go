@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"log"
 	"math/big"
@@ -11,7 +10,7 @@ import (
 
 func main() {
 	client, err := ethclient.Dial(
-		"https://eth-sepolia.g.alchemy.com/v2/API-KEY",
+		"https://eth-sepolia.g.alchemy.com/v2/acUFVE2BQoKhWJQR-d5Fx",
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -26,30 +25,47 @@ func main() {
 
 	fmt.Println("Latest Block:", blockNumber)
 
-	// GET BALANCE
+	//// GET BALANCE
+	//
+	//address := common.HexToAddress(
+	//	"0x3BD82d57f63ef1CDB5D177A6B149312B4d80D390",
+	//)
+	//
+	//balance, err := client.BalanceAt(
+	//	context.Background(),
+	//	address,
+	//	nil,
+	//)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//fmt.Println("wei: ", balance)
+	//
+	//ethValue := new(big.Float)
+	//ethValue.SetString(balance.String())
+	//
+	//eth := new(big.Float).Quo(
+	//	ethValue,
+	//	big.NewFloat(1e18),
+	//)
+	//
+	//fmt.Println("ETH:", eth)
 
-	address := common.HexToAddress(
-		"0x3BD82d57f63ef1CDB5D177A6B149312B4d80D390",
-	)
-
-	balance, err := client.BalanceAt(
+	block, err := client.BlockByNumber(
 		context.Background(),
-		address,
-		nil,
+		big.NewInt(int64(blockNumber)),
 	)
-	if err != nil {
-		log.Fatal(err)
+
+	transactions := block.Transactions()
+
+	for id, trx := range transactions {
+
+		log.Println("trx index: ", id)
+		log.Println("receiver: ", trx.To().String())
+		log.Println("value: ", trx.Value().String())
+		log.Println("gas price", trx.GasPrice().String())
+		log.Println("gas", trx.Gas())
+		log.Println("hash", trx.Hash().String())
 	}
-
-	fmt.Println("wei: ", balance)
-
-	ethValue := new(big.Float)
-	ethValue.SetString(balance.String())
-
-	eth := new(big.Float).Quo(
-		ethValue,
-		big.NewFloat(1e18),
-	)
-
-	fmt.Println("ETH:", eth)
 }
