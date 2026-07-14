@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"log"
 	"math/big"
@@ -27,9 +28,9 @@ func main() {
 
 	//// GET BALANCE
 	//
-	//address := common.HexToAddress(
-	//	"0x3BD82d57f63ef1CDB5D177A6B149312B4d80D390",
-	//)
+	address := common.HexToAddress(
+		"0x3BD82d57f63ef1CDB5D177A6B149312B4d80D390",
+	)
 	//
 	//balance, err := client.BalanceAt(
 	//	context.Background(),
@@ -65,7 +66,16 @@ func main() {
 		log.Println("receiver: ", trx.To().String())
 		log.Println("value: ", trx.Value().String())
 		log.Println("gas price", trx.GasPrice().String())
-		log.Println("gas", trx.Gas())
+		log.Println("gas limit", trx.Gas())
+		log.Println("nonce", trx.Nonce())
 		log.Println("hash", trx.Hash().String())
 	}
+
+	nonce, err := client.PendingNonceAt(context.Background(), address)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Next Wallet Nonce:", nonce)
+
 }
