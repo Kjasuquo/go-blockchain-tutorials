@@ -63,7 +63,7 @@ func main() {
 		"0x41b727f6e4e689589F3549f8FcB0FC2c4299af41",
 	)
 
-	// Load private key
+	// Load private key... You shouldn't display your private keys this way.
 	privateKeyHex := "7e9458d590a5bc4381576c326380e6f66f7983523817dbeea264946e45391a6c"
 
 	privateKey, err := crypto.HexToECDSA(privateKeyHex)
@@ -172,3 +172,5 @@ func main() {
 	fmt.Println("Transaction sent!")
 	fmt.Println("Transaction hash:", signedTx.Hash().Hex())
 }
+
+// 0x97697a665b9315D125a5C389B28aBf99209713C0
