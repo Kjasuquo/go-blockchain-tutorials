@@ -13,22 +13,21 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-const contractABI = `[
-	{
-		"inputs": [],
-		"name": "retrieve",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{"inputs":[],"name":"add","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"}
-]`
+const retrieveABI = `[
+		{
+			"inputs": [],
+			"name": "retrieve",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]`
 
 func main() {
 
@@ -46,14 +45,14 @@ func main() {
 
 	// Parse ABI
 	parsedABI, err := abi.JSON(
-		strings.NewReader(contractABI),
+		strings.NewReader(retrieveABI),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Encode retrieve()
-	data, err := parsedABI.Pack("add")
+	data, err := parsedABI.Pack("retrieve")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -73,7 +72,7 @@ func main() {
 	}
 
 	// Decode result
-	output, err := parsedABI.Unpack("add", result)
+	output, err := parsedABI.Unpack("retrieve", result)
 	if err != nil {
 		log.Fatal(err)
 	}
